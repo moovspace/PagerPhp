@@ -10,7 +10,7 @@ Php pagination links class. Links with icons.
 require('Pager.php');
 
 $o = new Pager();
-echo $o->Links((int) $_GET['page'], 123, $_GET['perpage']);
+echo $o->Links((int) $_GET['page'], 123, (int) $_GET['perpage']);
 echo $o->Style();
 ?>
 ```
