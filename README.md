@@ -29,6 +29,11 @@ echo $o->Style();
 ]
 ...
 ```
+### Update composer
+```bash
+composer update
+composer dump-autoload -o
+```
 
 ### Composer how to
 ```php
