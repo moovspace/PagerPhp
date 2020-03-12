@@ -17,3 +17,15 @@ echo $o->Links((int) $_GET['page'], 123, (int) $_GET['perpage']);
 echo $o->Style();
 ?>
 ```
+
+### Composer import
+```json
+...
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/moovspace/PagerPhp"
+    }
+]
+...
+```
