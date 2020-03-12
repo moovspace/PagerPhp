@@ -2,7 +2,7 @@
 Php pagination links class. Links with icons.
 
 ### PagerPhp Links
-<img src="https://raw.githubusercontent.com/moovspace/PagerPhp/master/pager-php.png" width="100%">
+<img src="https://raw.githubusercontent.com/moovspace/PagerPhp/master/pagerphp.png" width="100%">
 
 ### How to
 ```php
