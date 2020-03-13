@@ -3,7 +3,7 @@ namespace PagerPhp;
 
 class Pager
 {
-	public $MinPerpage = 5;
+	public $MinPerpage = 1;
 
 	/**
 	 * Get links
