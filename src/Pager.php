@@ -198,6 +198,47 @@ class Pager
 		</style>
 		<?php
 	}
+	
+	static function GetPosts()
+	{
+		$page = 1;
+		$offset = 0;
+		$perpage = Config::PERPAGE;
+
+		if(!empty($_GET['page']))
+		{
+			$page = (int)$_GET['page'];
+		}
+
+		if(!empty($_GET['perpage']))
+		{
+			$perpage = (int)$_GET['perpage'];
+		}
+
+		$offset = ($page - 1) * $perpage;
+		if($offset < 0)
+		{
+			$offset = 0;
+		}
+
+		$db = Db::GetInstance();
+		$r = $db->Pdo->prepare("SELECT * FROM post ORDER BY id DESC LIMIT :offset,:perpage");
+		$r->execute([':offset' => $offset, ':perpage' => $perpage]);
+		return $r->fetchAll();
+	}
+
+	/**
+	 * Count max rows sample function
+	 *
+	 * @return int
+	 */
+	static function GetMaxRows()
+	{
+		$db = Db::GetInstance();
+		$r = $db->Pdo->prepare("SELECT COUNT(*) as cnt FROM post ORDER BY id DESC");
+		$r->execute();
+		return $r->fetchAll()[0]['cnt'];
+	}
 }
 
 /*
