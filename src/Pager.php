@@ -1,6 +1,9 @@
 <?php
 namespace PagerPhp;
 
+use Exception;
+use Pager\Mysql\Db;
+
 class Pager
 {
 	public $MinPerpage = 1;
