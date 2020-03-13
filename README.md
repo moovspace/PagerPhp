@@ -10,7 +10,11 @@ Php pagination links class. Links with icons.
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 
 <?php
+// Only pager
 require('Pager.php');
+// Or with mysql
+// require('src/Settings/Config.php');
+// require('src/Mysql/Db.php');
 
 $o = new Pager();
 echo $o->Links((int) $_GET['page'], 123, (int) $_GET['perpage']);
