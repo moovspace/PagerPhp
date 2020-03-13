@@ -39,7 +39,9 @@ class Pager
 		if($subpage){
 			$link .= $this->PageLinkLeft($page, $subpage_nr);
 		}
-		$link .= $this->CurrPageLink($page, $this->MaxPage);
+		if($page != $this->MaxPage){
+			$link .= $this->CurrPageLink($page, $this->MaxPage);
+		}
 		if($subpage){
 			$link .= $this->PageLinkRight($page, $subpage_nr);
 		}
