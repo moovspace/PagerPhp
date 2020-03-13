@@ -5,7 +5,7 @@ namespace Pager\Mysql;
 
 use \PDO;
 use \Exception;
-use Woo\App\Settings\Config;
+use Pager\Settings\Config;
 
 final class Db extends Config
 {
