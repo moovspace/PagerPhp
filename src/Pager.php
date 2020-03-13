@@ -202,6 +202,11 @@ class Pager
 		<?php
 	}
 	
+	/**
+	 * Get all posts sample function
+	 *
+	 * @return array
+	 */
 	static function GetPosts()
 	{
 		$page = 1;
