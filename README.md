@@ -48,6 +48,9 @@ echo $o->Links((int) $_GET['page'], 123, (int) $_GET['perpage']);
 echo $o->Style();
 ?>
 ```
+### Pager sample PDO
+https://github.com/moovspace/PagerPhp/blob/master/pager-pdo-sample.php
+
 
 ### Hide php warnings, notice
 ```php
