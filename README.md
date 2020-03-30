@@ -22,6 +22,9 @@ echo $o->Style();
 ### Composer import
 ```json
 ...
+"require": {
+        "moovspace/PagerPhp": "v2.0"
+},
 "repositories": [
     {
         "type": "vcs",
