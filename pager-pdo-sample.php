@@ -1,6 +1,3 @@
-Hi sample from my webpage (Delete Trans class from code):
-
-```php
 <?php
 // php composer vendor autoload here
 require('vendor/autoload.php');
@@ -101,5 +98,11 @@ class Blog
 
 	}
 }
+
+
+// Run it
+Blog::Html();
+
+// or change function Blog() to ShowBlog();
+// Blog::ShowBlog();
 ?>
-```
