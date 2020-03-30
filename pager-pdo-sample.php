@@ -11,7 +11,9 @@ class Blog
 	static function Html()
 	{
 		echo '<div id="content">';
-		self::Blog();
+		
+		self::GetBlog(); // Get page html
+		
 		echo '</div>';
 	}
 
@@ -50,8 +52,9 @@ class Blog
 		$r->execute();
 		return $r->fetchAll()[0]['cnt'];
 	}
-
-	static function Blog()
+	
+	// Get page html
+	static function GetBlog()
 	{
 		$posts = self::GetPosts();
 		$records = self::GetMaxRows();
@@ -100,9 +103,9 @@ class Blog
 }
 
 
-// Run it
+// Show it
 Blog::Html();
 
-// or change function Blog() to ShowBlog();
-// Blog::ShowBlog();
+// Or 
+Blog::GetBlog();
 ?>
