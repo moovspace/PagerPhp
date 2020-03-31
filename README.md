@@ -13,8 +13,14 @@ Php pagination links class. Links with icons.
 // Only pager
 require('Pager.php');
 
+// Display current page rows here
+
+// Get table  max rows (or query search max rows)
+$max_rows = 247;
+
+// Create pagination links
 $o = new Pager();
-echo $o->Links((int) $_GET['page'], 123, (int) $_GET['perpage']);
+echo $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']);
 echo $o->Style();
 ?>
 ```
@@ -44,10 +50,17 @@ composer dump-autoload -o
 <?php
 require('vendor/autoload.php');
 
+// Import
 use PagerPhp\Pager;
 
+// Display current page rows here
+
+// Get table  max rows (or query search max rows)
+$max_rows = 247;
+
+// Create pagination links
 $o = new Pager();
-echo $o->Links((int) $_GET['page'], 123, (int) $_GET['perpage']);
+echo $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']);
 echo $o->Style();
 ?>
 ```
