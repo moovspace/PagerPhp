@@ -107,5 +107,5 @@ class Blog
 Blog::Html();
 
 // Or 
-Blog::GetBlog();
+// Blog::GetBlog();
 ?>
