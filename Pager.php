@@ -2,6 +2,7 @@
 class Pager
 {
 	protected $MinPerpage = 1;
+	protected $MaxPage = 1;
 
 	/**
 	 * Minimum perpage value
@@ -26,36 +27,20 @@ class Pager
 	 * $next Next page button html
 	 * $back Back page button html
 	 */
-	final function Links(int $page = 1, int $records = 11, int $perpage = 5, bool $subpage = true, int $subpage_nr = 3, array $attributes = ['page', 'perpage','search','edit','delete','id'], $next = 'next <i class="fas fa-chevron-right"></i>', $back = '<i class="fas fa-chevron-left"></i> back ') : string
+	final function Links(int $page = 1, int $records = 11, int $perpage = 1, bool $subpage = true, int $subpage_nr = 3, array $attributes = ['page', 'perpage','search','edit','delete','id'], $next = '<i class="fas fa-chevron-right"></i>', $back = '<i class="fas fa-chevron-left"></i>') : string
 	{
-		if($page < 1)
-		{
-			$page = 1;
-		}
-
-		if($perpage < $this->MinPerpage)
-		{
-			$perpage = $this->MinPerpage;
-		}
-
+		if($page < 1) { $page = 1; }
+		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
 		// Count max page number
 		$this->MaxPage($records, $perpage);
-
 		// Attr
 		$this->Attributes = $attributes;
-
 		// Links
 		$link = '<div class="pager">';
 		$link .= $this->BackLink($page, $back);
-		if($subpage){
-			$link .= $this->PageLinkLeft($page, $subpage_nr);
-		}
-		if($page != $this->MaxPage){
-			$link .= $this->CurrPageLink($page, $this->MaxPage);
-		}
-		if($subpage){
-			$link .= $this->PageLinkRight($page, $subpage_nr);
-		}
+		if($subpage) { $link .= $this->PageLinkLeft($page, $subpage_nr); }
+		if($page <= $this->MaxPage) { $link .= $this->CurrPageLink($page, $this->MaxPage); }
+		if($subpage) { $link .= $this->PageLinkRight($page, $subpage_nr); }
 		$link .= $this->NextLink($page, $next);
 		$link .= '</div>';
 
@@ -74,11 +59,7 @@ class Pager
 		if($records > $perpage)
 		{
 			$this->MaxPage = (int) ($records / $perpage);
-
-			if(($records % $perpage) > 0)
-			{
-				$this->MaxPage = $this->MaxPage + 1;
-			}
+			if(($records % $perpage) > 0) { $this->MaxPage = $this->MaxPage + 1; }
 		}
 		else
 		{
@@ -88,13 +69,8 @@ class Pager
 
 	protected function NextLink($page = 1, $icon = 'next')
 	{
-		if($page >= $this->MaxPage)
-		{
-			$page = $this->MaxPage;
-		}
-
+		if($page >= $this->MaxPage) { $page = $this->MaxPage; }
 		$next = $page + 1;
-
 		if($page < $this->MaxPage)
 		{
 			return '<a href="'.$this->Attributes().'page='.$next.'" class="nav-link next-link"> '.$icon.' </a>';
@@ -107,13 +83,8 @@ class Pager
 
 	protected function BackLink($page = 1, $icon = 'back')
 	{
-		if($page < 1)
-		{
-			$page = 1;
-		}
-
+		if($page < 1) { $page = 1; }
 		$back = $page - 1;
-
 		if($page > 1)
 		{
 			return '<a href="'.$this->Attributes().'page='.$back.'" class="nav-link back-link"> '.$icon.' </a>';
@@ -177,9 +148,9 @@ class Pager
 		return $o;
 	}
 
-	function Style()
+	static function Style()
 	{
-		?>
+		return '
 		<style>
 			.pager{
 				display: block;
@@ -190,29 +161,34 @@ class Pager
 				padding: 10px;
 			}
 			.nav-link{
-				font-size: 14px;
 				font-weight: 900;
+				font-size: 14px;
 				line-height: 25px;
 				padding: 10px;
-				background: #63d600;
-				color: #fff;
+				background: #fff;
+				border: 1px solid #63d600;
+				color: #63d600;
 				margin: 5px;
 				border-radius: 5px;
 				transition: all .6s;
 			}
 			.nav-link:hover{
 				background: #52b100;
+				color: #fff;
 			}
 			.next-link, .back-link, .curr-link
 			{
-				background: #f60
+				background: #fff;
+				border: 1px solid #f60;
+				color: #f60;
 			}
 			.next-link:hover, .back-link:hover, .curr-link:hover
 			{
-				background: #ff6600aa
+				background: #ff6600aa;
+				color: #fff;
 			}
 		</style>
-		<?php
+		';
 	}
 
 	/**
@@ -220,12 +196,11 @@ class Pager
 	 *
 	 * @return int
 	 */
-	static function GetMaxRows()
+	function GetMaxRows()
 	{
-		$db = Db::GetInstance();
-		$r = $db->Pdo->prepare("SELECT COUNT(*) as cnt FROM post ORDER BY id DESC");
-		$r->execute();
-		return $r->fetchAll()[0]['cnt'];
+		$arr = [];
+		$sql = "SELECT COUNT(*) as cnt FROM orders ORDER BY id DESC";
+		return Db::Query($sql,$arr)->FetchAll()[0]['cnt'];
 	}
 
 	/**
@@ -233,18 +208,17 @@ class Pager
 	 *
 	 * @return array
 	 */
-	function GetPosts($page = 1, $offset = 0, $perpage = 1)
+	function GetRows($page = 1, $offset = 0, $perpage = 1)
 	{
 		if(!empty($_GET['page'])) { $page = (int)$_GET['page']; }
 		if(!empty($_GET['perpage'])) { $perpage = (int)$_GET['perpage']; }
-		if($page > $this->MaxPage) { $page = $this->MaxPage; }
 		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
 
 		$arr = [
 			':offset' => self::Offset((int) $page, (int) $perpage),
 			':perpage' => $perpage
 		];
-		$sql = "SELECT * FROM post ORDER BY id DESC LIMIT :offset,:perpage";
+		$sql = "SELECT * FROM orders ORDER BY id DESC LIMIT :offset,:perpage";
 		return Db::Query($sql,$arr)->FetchAllObj();
 	}
 }
