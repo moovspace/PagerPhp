@@ -6,7 +6,18 @@ use Pager\Mysql\Db;
 
 class Pager
 {
-	public $MinPerpage = 1;
+	protected $MinPerpage = 1;
+
+	/**
+	 * Minimum perpage value
+	 *
+	 * @param integer $perpage Records per page
+	 * @return void
+	 */
+	function Perpage(int $perpage = 8)
+	{
+		$this->MinPerpage = $perpage;
+	}
 
 	/**
 	 * Get links
@@ -164,7 +175,14 @@ class Pager
 		return $url;
 	}
 
-	public function Style()
+	static function Offset(int $page, int $perpage): int
+	{
+		$o = ($page - 1) * $perpage;
+		if($o < 0) { $o = 0; }
+		return $o;
+	}
+
+	function Style()
 	{
 		?>
 		<style>
@@ -201,39 +219,6 @@ class Pager
 		</style>
 		<?php
 	}
-	
-	/**
-	 * Get all posts sample function
-	 *
-	 * @return array
-	 */
-	static function GetPosts()
-	{
-		$page = 1;
-		$offset = 0;
-		$perpage = Config::PERPAGE;
-
-		if(!empty($_GET['page']))
-		{
-			$page = (int)$_GET['page'];
-		}
-
-		if(!empty($_GET['perpage']))
-		{
-			$perpage = (int)$_GET['perpage'];
-		}
-
-		$offset = ($page - 1) * $perpage;
-		if($offset < 0)
-		{
-			$offset = 0;
-		}
-
-		$db = Db::GetInstance();
-		$r = $db->Pdo->prepare("SELECT * FROM post ORDER BY id DESC LIMIT :offset,:perpage");
-		$r->execute([':offset' => $offset, ':perpage' => $perpage]);
-		return $r->fetchAll();
-	}
 
 	/**
 	 * Count max rows sample function
@@ -247,6 +232,26 @@ class Pager
 		$r->execute();
 		return $r->fetchAll()[0]['cnt'];
 	}
+
+	/**
+	 * Get page records sample function
+	 *
+	 * @return array
+	 */
+	function GetPosts($page = 1, $offset = 0, $perpage = 1)
+	{
+		if(!empty($_GET['page'])) { $page = (int)$_GET['page']; }
+		if(!empty($_GET['perpage'])) { $perpage = (int)$_GET['perpage']; }
+		if($page > $this->MaxPage) { $page = $this->MaxPage; }
+		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
+
+		$arr = [
+			':offset' => self::Offset((int) $page, (int) $perpage),
+			':perpage' => $perpage
+		];
+		$sql = "SELECT * FROM post ORDER BY id DESC LIMIT :offset,:perpage";
+		return Db::Query($sql,$arr)->FetchAllObj();
+	}
 }
 
 /*
@@ -256,6 +261,7 @@ require('Pager.php');
 use PagerPhp\Pager;
 
 $o = new Pager();
+$0->Perpage(4); // Min perpage
 echo $o->Links((int) $_GET['page'], 123, $_GET['perpage']);
 echo $o->Style();
 */

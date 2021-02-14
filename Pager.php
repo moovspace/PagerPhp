@@ -237,10 +237,11 @@ class Pager
 	{
 		if(!empty($_GET['page'])) { $page = (int)$_GET['page']; }
 		if(!empty($_GET['perpage'])) { $perpage = (int)$_GET['perpage']; }
+		if($page > $this->MaxPage) { $page = $this->MaxPage; }
 		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
 
 		$arr = [
-			':offset' => self::Offset($page,$perpage),
+			':offset' => self::Offset((int) $page, (int) $perpage),
 			':perpage' => $perpage
 		];
 		$sql = "SELECT * FROM post ORDER BY id DESC LIMIT :offset,:perpage";
