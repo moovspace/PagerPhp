@@ -1,25 +1,25 @@
 {
-    "name": "moovspace/pagerphp",
-    "description": "PHP pagination class",
-    "type": "library",
-    "license": "MIT",
-    "minimum-stability": "stable",
-    "authors": [
-        {
-            "name": "Marcyś",
-            "email": "moovspace@github.com"
-        }
-    ],
-    "require": {
-        "php": ">=7.4",
-        "ext-mbstring": "*",
+	"name": "moovspace/pagerphp",
+	"description": "PHP pagination class",
+	"type": "library",
+	"license": "MIT",
+	"minimum-stability": "stable",
+	"authors": [
+		{
+			"name": "Marcyś",
+			"email": "moovspace@github.com"
+		}
+	],
+	"require": {
+		"php": ">=7.4",
+		"ext-mbstring": "*",
 		"ext-pdo": "*",
-        "ext-json": "*",
-        "ext-redis": "*"
-    },
-    "autoload": {
-        "psr-4": {
-            "PagerPhp\\": "src/"
-        }
-    }
+		"ext-json": "*",
+		"ext-redis": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"PagerPhp\\": "src/"
+		}
+	}
 }

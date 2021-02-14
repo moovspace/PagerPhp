@@ -13,7 +13,7 @@ Php pagination links class. Links with icons.
 ```json
 ...
 "require": {
-        "moovspace/PagerPhp": "v3.0"
+	"moovspace/pagerphp": "v3.0"
 }
 ```
 ### Update composer
@@ -54,7 +54,7 @@ use PagerPhp\Mysql\Db;
 
 class CategoryList extends Pager
 {
-    function GetMaxRows()
+	function GetMaxRows()
 	{
 		$arr = [];
 		$sql = "SELECT COUNT(*) as cnt FROM category";
