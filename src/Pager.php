@@ -230,13 +230,16 @@ class Pager
 
 /*
 // Import
-require('Pager.php');
-// with Composer
-use PagerPhp\Pager;
+require('vendor/autoload.php');
 
-$o = new Pager();
-$0->Perpage(4); // Min perpage
-echo $o->Links((int) $_GET['page'], 123, $_GET['perpage']);
-echo $o->Style();
+// Import
+use PagerPhp\Pager;
+use PagerPhp\Mysql\Db;
+
+$l = new Pager();
+$l->Perpage(4);
+$max_rows = $l->GetMaxRows();
+$links = $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']);
+$rows = $o->GetRows();
 */
 ?>
