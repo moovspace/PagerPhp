@@ -6,12 +6,16 @@
     "minimum-stability": "stable",
     "authors": [
         {
-            "name": "Moov",
+            "name": "Marcyś",
             "email": "moovspace@github.com"
         }
     ],
     "require": {
-        "php": ">=7.3"
+        "php": ">=7.4",
+        "ext-mbstring": "*",
+		"ext-pdo": "*",
+        "ext-json": "*",
+        "ext-redis": "*"
     },
     "autoload": {
         "psr-4": {

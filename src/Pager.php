@@ -2,7 +2,7 @@
 namespace PagerPhp;
 
 use Exception;
-use Pager\Mysql\Db;
+// use PagerPhp\Mysql\Db; // Add to extended class
 
 class Pager
 {

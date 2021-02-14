@@ -9,36 +9,12 @@ Php pagination links class. Links with icons.
 <!-- Add fontawesome 5 for icons in links -->
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.1/css/all.css">
 
-<?php
-// Only pager
-require('Pager.php');
-
-// Display current page rows here
-
-// Get table  max rows (or query search max rows)
-$max_rows = 247;
-
-// Create pagination links
-$o = new Pager();
-$o->Perpage(4); // Min perpage
-echo $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']);
-echo $o->Style();
-?>
-```
-
 ### Composer import
 ```json
 ...
 "require": {
-        "moovspace/PagerPhp": "v2.0"
-},
-"repositories": [
-    {
-        "type": "vcs",
-        "url": "https://github.com/moovspace/PagerPhp"
-    }
-]
-...
+        "moovspace/PagerPhp": "v3.0"
+}
 ```
 ### Update composer
 ```bash
@@ -53,21 +29,62 @@ require('vendor/autoload.php');
 
 // Import
 use PagerPhp\Pager;
+use PagerPhp\Mysql\Db;
 
-// Display current page rows here
-
-// Get table  max rows (or query search max rows)
-$max_rows = 247;
-
-// Create pagination links
-$o = new Pager();
-echo $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']);
-echo $o->Style();
+// Pager init
+$l = new Pager();
+// Min perpage
+$l->Perpage(4);
+// Table max rows
+$max_rows = $l->GetMaxRows();
+// Create links count max page
+$links = $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']); // Create pagination links
+// Then get rows
+$rows = $o->GetRows();
+// Next style links
+$style = $o->Style();
 ?>
 ```
-### Pager sample PDO
-https://github.com/moovspace/PagerPhp/blob/master/pager-pdo-sample.php
 
+### Custom pager class
+```php
+<?php
+use PagerPhp\Pager;
+use PagerPhp\Mysql\Db;
+
+class CategoryList extends Pager
+{
+    function GetMaxRows()
+	{
+		$arr = [];
+		$sql = "SELECT COUNT(*) as cnt FROM category";
+		return Db::Query($sql,$arr)->FetchAll()[0]['cnt'];
+	}
+
+	function GetRows($page = 1, $offset = 0, $perpage = 1)
+	{
+		if(!empty($_GET['page'])) { $page = (int)$_GET['page']; }
+		if(!empty($_GET['perpage'])) { $perpage = (int)$_GET['perpage']; }
+		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
+
+		$arr = [
+			':offset' => self::Offset((int) $page, (int) $perpage),
+			':perpage' => $perpage
+		];
+		$sql = "SELECT * FROM category ORDER BY name ASC LIMIT :offset,:perpage";
+		return Db::Query($sql,$arr)->FetchAllObj();
+	}
+}
+
+$l = new CategoryList();
+$l->Perpage(4);
+$max_rows = $l->GetMaxRows();
+$links = $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']); // Create pagination links
+$rows = $o->GetRows();
+
+echo $links;
+print_r($rows);
+```
 
 ### Hide php warnings, notice
 ```php
