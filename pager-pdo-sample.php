@@ -11,13 +11,13 @@ class Blog
 	static function Html()
 	{
 		echo '<div id="content">';
-		
+
 		self::GetBlog(); // Get page html
-		
+
 		echo '</div>';
 	}
 
-	static function GetPosts()
+	function GetPosts()
 	{
 		$page = 1;
 		$offset = 0;
@@ -39,22 +39,24 @@ class Blog
 			$offset = 0;
 		}
 
+		if($perpage < $this->MinPerpage) { $perpage = $this->MinPerpage; }
+
 		$db = Db::GetInstance();
 		$r = $db->Pdo->prepare("SELECT * FROM post ORDER BY id DESC LIMIT :offset,:perpage");
 		$r->execute([':offset' => $offset, ':perpage' => $perpage]);
 		return $r->fetchAll();
 	}
 
-	static function GetMaxRows()
+	function GetMaxRows()
 	{
 		$db = Db::GetInstance();
 		$r = $db->Pdo->prepare("SELECT COUNT(*) as cnt FROM post ORDER BY id DESC");
 		$r->execute();
 		return $r->fetchAll()[0]['cnt'];
 	}
-	
+
 	// Get page html
-	static function GetBlog()
+	function GetBlog()
 	{
 		$posts = self::GetPosts();
 		$records = self::GetMaxRows();
@@ -81,15 +83,8 @@ class Blog
 					';
 				}
 
-				if(empty($_GET['page'])){
-					$_GET['page'] = 1;
-				}
-
-				if(empty($_GET['perpage'])){
-					$_GET['perpage'] = Config::PERPAGE;
-				}
-
 				$pager = new Pager();
+				$pager->Perpage(4);
 				echo $pager->Links((int) $_GET['page'], $records, (int) $_GET['perpage']);
 				echo $pager->Style();
 				?>
@@ -104,8 +99,6 @@ class Blog
 
 
 // Show it
-Blog::Html();
-
-// Or 
-// Blog::GetBlog();
+$b = new Blog();
+$b->Html();
 ?>

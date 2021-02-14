@@ -20,6 +20,7 @@ $max_rows = 247;
 
 // Create pagination links
 $o = new Pager();
+$o->Perpage(4); // Min perpage
 echo $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']);
 echo $o->Style();
 ?>
