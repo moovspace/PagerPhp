@@ -13,7 +13,7 @@ Php pagination links class. Links with icons.
 ```json
 ...
 "require": {
-	"moovspace/pagerphp": "3.0"
+	"moovspace/pagerphp": "3.1"
 }
 ```
 ### Update composer
