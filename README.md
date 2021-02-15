@@ -33,6 +33,8 @@ use PagerPhp\Mysql\Db;
 
 // Pager init
 $l = new Pager();
+// Error page
+$l->ErrorPage('Wrong page number!');
 // Min perpage
 $l->Perpage(4);
 // Table max rows

@@ -8,6 +8,20 @@ class Pager
 {
 	protected $MinPerpage = 1;
 	protected $MaxPage = 1;
+	protected $ErrorPage = 'Invalid page number!';
+	protected $ErrorPageHref = '';
+
+	/**
+	 * Set error page text and/or url
+	 *
+	 * @param string $str Error page text
+	 * @return object
+	 */
+	function ErrorPage($str, $url = '')
+	{
+		$this->ErrorPage = $str;
+		$this->$ErrorPageHref = $url;
+	}
 
 	/**
 	 * Minimum perpage value
@@ -49,7 +63,10 @@ class Pager
 		$link .= $this->NextLink($page, $next);
 		$link .= '</div>';
 
-		return $link;
+		if($page <= $this->MaxPage) {
+			return $link;
+		}
+		return $this->ErrorPageLink($this->ErrorPage,$this->ErrorPageHref);
 	}
 
 	/**
@@ -131,6 +148,15 @@ class Pager
 			}
 		}
 		return $l;
+	}
+
+	protected function ErrorPageLink($err, $url)
+	{
+		$href = '';
+		if(!empty($url)){
+			$href = 'href="'.$url.'"';
+		}
+		return '<a '.$href.' class="nav-page-error"> '.$err.'</a>';
 	}
 
 	protected function Attributes()
