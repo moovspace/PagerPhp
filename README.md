@@ -32,19 +32,19 @@ use PagerPhp\Pager;
 use PagerPhp\Mysql\Db;
 
 // Pager init
-$l = new Pager();
+$p = new Pager();
 // Error page
-$l->ErrorPage('Wrong page number!');
+$p->ErrorPage('Wrong page number!');
 // Min perpage
-$l->Perpage(4);
+$p->Perpage(4);
 // Table max rows
-$max_rows = $l->GetMaxRows();
+$max_rows = $p->GetMaxRows();
 // Create links count max page
-$links = $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']); // Create pagination links
+$links = $p->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']); // Create pagination links
 // Then get rows
-$rows = $o->GetRows();
+$rows = $p->GetRows();
 // Next style links
-$style = $o->Style();
+$style = $p->Style();
 ?>
 ```
 
@@ -78,11 +78,11 @@ class CategoryList extends Pager
 	}
 }
 
-$l = new CategoryList();
-$l->Perpage(4);
-$max_rows = $l->GetMaxRows();
-$links = $o->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']); // Create pagination links
-$rows = $o->GetRows();
+$c = new CategoryList();
+$c->Perpage(4);
+$max_rows = $c->GetMaxRows();
+$links = $c->Links((int) $_GET['page'], $max_rows, (int) $_GET['perpage']); // Create pagination links
+$rows = $c->GetRows();
 
 echo $links;
 print_r($rows);
